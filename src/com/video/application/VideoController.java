@@ -3,14 +3,18 @@ package com.video.application;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.video.domain.Tag;
 import com.video.domain.Usuari;
 import com.video.domain.Video;
 
 public class VideoController {
 
 	Scanner tecla = new Scanner(System.in);
+	int id_Video = 1;
 	private boolean validat = true;
 	ArrayList<Video> llistavideos = new ArrayList<Video>();
+	List<Tag> llistatags = new ArrayList<Tag>();
 
 	public boolean isValidat() {
 		return validat;
@@ -42,6 +46,7 @@ public class VideoController {
 				Usuari verificat = new Usuari(usuarilogin, usuari.getNom(), usuari.getCognom(), passwordlogin,
 						usuari.getData_registre());
 				System.out.println("hola " + verificat);
+
 				validat = true;
 
 			} else {
@@ -91,14 +96,15 @@ public class VideoController {
 				break;
 			case 2:
 				mostrarVideo();
+				tecla.nextLine();
 				break;
 
 			case 3:
 				return;
 
 			}
-			System.out.println("Vols tornar a fer un altre operació(S/N?");
-			//tecla.nextLine();
+			System.out.println("Vols tornar a fer un altre operació (S/N?");
+
 			String opcio = tecla.nextLine();
 			if (opcio.equalsIgnoreCase("s")) {
 				repetir = false;
@@ -112,36 +118,74 @@ public class VideoController {
 
 		} while (!repetir);
 
-		System.out.println("Fi modul");
-
 	}
 
 	public void crearVideo() {
+
 		tecla.nextLine();
 		System.out.println("1-Crear Video");
-		int id_Video = 0;
+
 		System.out.println("Introduïr URL");
 		String Iurl = tecla.nextLine();
 		System.out.println("Introduïr titol del Video");
 		String Ivideo = tecla.nextLine();
-		System.out.println("Introduïr el tag Video");
-		String Itag = tecla.nextLine();
-		id_Video++;
 
-		llistavideos.add(new Video(id_Video, Iurl, Ivideo, Itag));
-		/*
-		 * for (Video e : llistavideos) { System.out.println("Video nº: "
-		 * +e.getVideo_id()+" Url: "+e.getUrl()+ " Titol del Video : "+e.getTitol()
-		 * +" Tags:"+e.getTags()); }
-		 */
+		// Afegir tags video
+		String noutag;
+		do {
+
+			System.out.println("Vols introduïr tag per al video : " + Ivideo + " S/N");
+			noutag = tecla.nextLine();
+
+			if (noutag.equalsIgnoreCase("s")) {
+				String altretag;
+				do {
+					System.out.println("Introduïr el tag del Video");
+					String Itag = tecla.nextLine();
+					Tag newtag = new Tag(id_Video, Itag);
+					llistatags.add(newtag);
+					System.out.println("Tag emmagatzemat, vols incloure un altre tag al video ? (s/n)");
+					altretag = tecla.nextLine();
+					if (altretag.equalsIgnoreCase("n")) {
+						System.out.println("ok");
+						noutag = "n";
+					} else if (altretag.equalsIgnoreCase("s")) {
+						System.out.println("Nou tag per al video : " + Ivideo);
+					} else {
+						System.out.println("Has escollit una opcio incorrecte !!");
+					}
+				} while (altretag.equalsIgnoreCase("s"));
+
+			} else if (noutag.equalsIgnoreCase("n")) {
+				System.out.println("ok");
+			} else {
+				System.out.println("Has escollit una opcio incorrecte !!");
+			}
+		} while (noutag.equalsIgnoreCase("s"));
+
+		llistavideos.add(new Video(id_Video, Iurl, Ivideo, llistatags));
+
+		id_Video++;
 		validat = true;
 	}
 
 	public void mostrarVideo() {
 
 		for (Video e : llistavideos) {
-			System.out.println("Video nº: " + e.getVideo_id() + " Url: " + e.getUrl() + " Titol del Video : "
-					+ e.getTitol() + " Tags:" + e.getTags());
+			System.out.println(
+					"Video nº: " + e.getVideo_id() + " Url: " + e.getUrl() + " Titol del Video : " + e.getTitol());
+			for (Tag t : llistatags) {
+
+				if (e.getVideo_id() == t.getTag_id()) {
+
+					System.out.println("-Id Video: " + t.getTag_id() + " Tag : " + t.getTags());
+
+				} else {
+
+				}
+
+			}
+
 		}
 	}
 }

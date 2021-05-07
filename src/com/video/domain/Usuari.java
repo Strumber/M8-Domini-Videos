@@ -1,11 +1,11 @@
 package com.video.domain;
 
 public class Usuari {
-	private String usuar;
-	private String nom;
-	private String cognom;
-	private String password;
-	private String data_registre;
+	protected String usuar;
+	protected String nom;
+	protected String cognom;
+	protected String password;
+	protected String data_registre;
 	
 	public Usuari() {
 		

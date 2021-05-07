@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Video {
-	private int video_id;
-	private String Url;
-	private String titol;
-	private String tags;
-	
-	public Video(int video_id, String url, String titol, String tags) {
+	protected int video_id;
+	protected String Url;
+	protected String titol;
+	protected List<Tag> tags = new ArrayList<>();
+
+	public Video(int video_id, String url, String titol, List<Tag> llistatags) {
 		super();
 		this.video_id = video_id;
-		Url = url;
+		this.Url = url;
 		this.titol = titol;
-		this.tags = tags;
+		this.tags = llistatags;
 	}
 
 	public int getVideo_id() {
@@ -41,13 +41,12 @@ public class Video {
 		this.titol = titol;
 	}
 
-	public String getTags() {
+	public List<Tag> getLTags() {
 		return tags;
 	}
 
-	public void setTags(String tags) {
+	public void setTags(List<Tag> tags) {
 		this.tags = tags;
 	}
-	
 
 }

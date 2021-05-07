@@ -9,17 +9,16 @@ public class AppVideo {
 
 		// Login Usuari: ITAcademy password: 1234
 
-		vc.login();
+		//vc.login();
 		
-		System.out.println("M8 Exercici Domini Videos");
+		System.out.println("M8 Exercici Domini Videos-Milestone 1");
 				
 		if (vc.isValidat() == true) {
 
 			vc.menuvideo();
 
-		} else {
-			//System.out.println("Fi APP");
-		}
+		} 
+		
 		System.out.println("Fi APP ");
 	}
 	
