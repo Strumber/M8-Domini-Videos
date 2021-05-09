@@ -3,14 +3,16 @@ package com.video.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.video.application.camps_buits;
+
 public class Video {
 	protected int video_id;
 	protected String Url;
 	protected String titol;
 	protected List<Tag> tags = new ArrayList<>();
 
-	public Video(int video_id, String url, String titol, List<Tag> llistatags) {
-		super();
+	public Video(int video_id, String url, String titol, List<Tag> llistatags) throws Exception {
+
 		this.video_id = video_id;
 		this.Url = url;
 		this.titol = titol;

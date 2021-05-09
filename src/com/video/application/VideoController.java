@@ -12,7 +12,7 @@ public class VideoController {
 
 	Scanner tecla = new Scanner(System.in);
 	int id_Video = 1;
-	private boolean validat = true;
+	private boolean validat = false;
 	ArrayList<Video> llistavideos = new ArrayList<Video>();
 	List<Tag> llistatags = new ArrayList<Tag>();
 
@@ -25,7 +25,7 @@ public class VideoController {
 	}
 
 	public void login() {
-		Usuari usuari = new Usuari();// "ITAcademy", "1234"
+		Usuari usuari = new Usuari("ITAcademy", "1234");
 		String usuarilogin;
 		String passwordlogin = null;
 		int intentu = 0;
@@ -64,7 +64,7 @@ public class VideoController {
 
 	}
 
-	public void menuvideo() {
+	public void menuvideo() throws Exception {
 		boolean repetir = false;
 		int opciomenu = 0;
 		do {
@@ -93,6 +93,7 @@ public class VideoController {
 			switch (opciomenu) {
 			case 1:
 				crearVideo();
+
 				break;
 			case 2:
 				mostrarVideo();
@@ -120,15 +121,38 @@ public class VideoController {
 
 	}
 
-	public void crearVideo() {
-
+	public void crearVideo() throws Exception {
+		String Iurl = null;
+		String Ivideo = null;
+		boolean buit = false;
 		tecla.nextLine();
 		System.out.println("1-Crear Video");
 
 		System.out.println("Introduïr URL");
-		String Iurl = tecla.nextLine();
+		try {
+			Iurl = tecla.nextLine();
+
+			if (Iurl.isEmpty()) {
+				throw new camps_buits();
+
+			}
+		} catch (camps_buits e) {
+			System.out.println("el cap URL no pot estar buit");
+			buit = true;
+		}
+
 		System.out.println("Introduïr titol del Video");
-		String Ivideo = tecla.nextLine();
+		try {
+			Ivideo = tecla.nextLine();
+
+			if (Ivideo.isEmpty()) {
+				throw new camps_buits();
+			}
+		} catch (camps_buits e) {
+			System.out.println("el cap Video no pot estar buit");
+			buit = true;
+
+		}
 
 		// Afegir tags video
 		String noutag;
@@ -163,9 +187,13 @@ public class VideoController {
 			}
 		} while (noutag.equalsIgnoreCase("s"));
 
-		llistavideos.add(new Video(id_Video, Iurl, Ivideo, llistatags));
+		if (buit == false) {
+			llistavideos.add(new Video(id_Video, Iurl, Ivideo, llistatags));
+			id_Video++;
+		} else {
+			System.out.println("Video no registrat");
+		}
 
-		id_Video++;
 		validat = true;
 	}
 
