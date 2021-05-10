@@ -1,22 +1,25 @@
 package com.video.domain;
 
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.video.application.camps_buits;
+
 
 public class Video {
 	protected int video_id;
 	protected String Url;
 	protected String titol;
 	protected List<Tag> tags = new ArrayList<>();
+	protected Date data_pujada;
 
-	public Video(int video_id, String url, String titol, List<Tag> llistatags) throws Exception {
+	public Video(int video_id, String url, String titol, List<Tag> llistatags,Date data_pujada) throws Exception {
 
 		this.video_id = video_id;
 		this.Url = url;
 		this.titol = titol;
 		this.tags = llistatags;
+		this.data_pujada=data_pujada;
 	}
 
 	public int getVideo_id() {
@@ -49,6 +52,14 @@ public class Video {
 
 	public void setTags(List<Tag> tags) {
 		this.tags = tags;
+	}
+
+	public Date getData_pujada() {
+		return data_pujada;
+	}
+
+	public void setData_pujada(Date data_pujada) {
+		this.data_pujada = data_pujada;
 	}
 
 }

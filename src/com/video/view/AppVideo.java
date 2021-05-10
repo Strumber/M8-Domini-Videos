@@ -11,7 +11,7 @@ public class AppVideo {
 
 		vc.login();
 
-		System.out.println("M8 Exercici Domini Videos-Milestone 1");
+		System.out.println("M8 Exercici Domini Videos-Milestone 1 i 2");
 
 		if (vc.isValidat() == true) {
 

@@ -1,9 +1,10 @@
 package com.video.application;
 
 import java.util.Scanner;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.text.SimpleDateFormat;
 import com.video.domain.Tag;
 import com.video.domain.Usuari;
 import com.video.domain.Video;
@@ -15,6 +16,10 @@ public class VideoController {
 	private boolean validat = false;
 	ArrayList<Video> llistavideos = new ArrayList<Video>();
 	List<Tag> llistatags = new ArrayList<Tag>();
+	// format Data a mostrar
+	SimpleDateFormat Datallarga = new SimpleDateFormat("hh:mm:ss a dd-MMM-yyyy");
+	SimpleDateFormat Datacurta = new SimpleDateFormat("dd-MMM-yyyy");
+	SimpleDateFormat hora = new SimpleDateFormat("hh:mm:ss");
 
 	public boolean isValidat() {
 		return validat;
@@ -25,7 +30,9 @@ public class VideoController {
 	}
 
 	public void login() {
-		Usuari usuari = new Usuari("ITAcademy", "1234");
+
+		Usuari usuari = new Usuari();// "ITAcademy", "1234"
+
 		String usuarilogin;
 		String passwordlogin = null;
 		int intentu = 0;
@@ -73,7 +80,8 @@ public class VideoController {
 			System.out.println("-------------------------------------");
 			System.out.println("1-Crear Video");
 			System.out.println("2-LListat de videos");
-			System.out.println("3-Sortir");
+			System.out.println("3-Estat dels videos");
+			System.out.println("4-Sortir");
 			System.out.println("-------------------------------------");
 
 			System.out.println("Selecciona:");
@@ -84,7 +92,7 @@ public class VideoController {
 				validat = true;
 
 			} catch (Exception e) {
-				System.out.println("Opció incorrecte selecciona 1, 2 o 3");
+				System.out.println("Opció incorrecte selecciona 1, 2 , 4 o 4");
 				tecla.nextLine();
 				validat = false;
 
@@ -92,7 +100,7 @@ public class VideoController {
 			validat = false;
 			switch (opciomenu) {
 			case 1:
-				crearVideo();
+				crearvideo();
 
 				break;
 			case 2:
@@ -101,6 +109,11 @@ public class VideoController {
 				break;
 
 			case 3:
+				estatvideo();
+				tecla.nextLine();
+				break;
+			case 4:
+
 				return;
 
 			}
@@ -121,7 +134,7 @@ public class VideoController {
 
 	}
 
-	public void crearVideo() throws Exception {
+	public void crearvideo() throws Exception {
 		String Iurl = null;
 		String Ivideo = null;
 		boolean buit = false;
@@ -137,7 +150,7 @@ public class VideoController {
 
 			}
 		} catch (camps_buits e) {
-			System.out.println("el cap URL no pot estar buit");
+			System.out.println("el camp URL no pot estar buit");
 			buit = true;
 		}
 
@@ -149,13 +162,14 @@ public class VideoController {
 				throw new camps_buits();
 			}
 		} catch (camps_buits e) {
-			System.out.println("el cap Video no pot estar buit");
+			System.out.println("el camp Video no pot estar buit");
 			buit = true;
 
 		}
 
 		// Afegir tags video
 		String noutag;
+
 		do {
 
 			System.out.println("Vols introduïr tag per al video : " + Ivideo + " S/N");
@@ -187,8 +201,14 @@ public class VideoController {
 			}
 		} while (noutag.equalsIgnoreCase("s"));
 
+		// Data Registre
+
+		Date registre_data = new Date();
+
+		System.out.println("Video Creat :" + Datallarga.format(registre_data)); 
+
 		if (buit == false) {
-			llistavideos.add(new Video(id_Video, Iurl, Ivideo, llistatags));
+			llistavideos.add(new Video(id_Video, Iurl, Ivideo, llistatags, registre_data));
 			id_Video++;
 		} else {
 			System.out.println("Video no registrat");
@@ -197,16 +217,43 @@ public class VideoController {
 		validat = true;
 	}
 
+	public void estatvideo() {
+
+		Date hora_actual = new Date();
+		long actual = (hora_actual.getTime()) / 1000; // Hora actual en segons
+
+		for (Video e : llistavideos) {
+
+			System.out.println("Video nº: " + e.getVideo_id() + " Titol del Video : " + e.getTitol() + "\n ------->");
+			System.out.println(" Hora Actual :" + hora.format(hora_actual));
+			System.out.println(" Hora Registre :" + hora.format(e.getData_pujada()));
+			long reg = (e.getData_pujada().getTime()) / 1000; // Hora de registre en segons
+			long diferencia = actual - reg;
+			System.out.print("Diferencia en segons : " + diferencia + "\n ESTAT :");
+			if (diferencia < 30) { // temps inferior a 30 segons
+				System.out.println("-->Uploading");
+
+			} else if (diferencia < 30 || diferencia < 60) { // temps entre 30 i 60 segons
+				System.out.println("-->Verifying");
+			} else {
+				System.out.println("-->PUBLIC");// temps superior a 60 segons
+			}
+
+		}
+
+	}
+
 	public void mostrarVideo() {
 
 		for (Video e : llistavideos) {
-			System.out.println(
-					"Video nº: " + e.getVideo_id() + " Url: " + e.getUrl() + " Titol del Video : " + e.getTitol());
+			System.out.println("Video nº: " + e.getVideo_id() + " Url: " + e.getUrl() + " Titol del Video : "
+					+ e.getTitol() + "\n video creat :" + Datacurta.format(e.getData_pujada()));
+			System.out.println(" Hora :" + hora.format(e.getData_pujada()));
 			for (Tag t : llistatags) {
 
 				if (e.getVideo_id() == t.getTag_id()) {
 
-					System.out.println("-Id Video: " + t.getTag_id() + " Tag : " + t.getTags());
+					System.out.println("-Id Video: " + t.getTag_id() + " Tag : " + t.getTags() + "\n");
 
 				} else {
 

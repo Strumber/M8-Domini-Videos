@@ -8,13 +8,15 @@ public class Usuari {
 	protected String data_registre;
 	
 	public Usuari() {
+		this.usuar = "ITAcademy";
+		this.password = "1234";
 		
 	}
 	
 	public Usuari(String usuari,String password) {
 		
-		this.usuar = "ITAcademy";
-		this.password = "1234";
+		this.usuar = usuari;
+		this.password = password;
 	}
 	public Usuari(String usuari, String nom, String cognom, String password, String data_registre) {
 		
